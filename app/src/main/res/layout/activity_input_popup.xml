@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="250dp"
+    tools:context=".InputPopupActivity">
+
+    <TextView
+        android:id="@+id/text_view_input_popup_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="제목"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:id="@+id/linear_layout_input_popup_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/text_view_input_popup_title"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="*날짜 :"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/text_view_input_popup_date"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="날짜"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/button_input_popup_date_change"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
+
+    <GridLayout
+        android:id="@+id/grid_layout_input_popup"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_layout_input_popup_date"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:columnCount="2" >
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="*금액 :"
+            android:textSize="15sp"/>
+
+        <EditText
+            android:id="@+id/edit_text_input_popup_amount"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textSize="15sp" />
+
+        <!-- br -->
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="내용 :"
+            android:textSize="15sp"/>
+
+        <EditText
+            android:id="@+id/edit_text_input_popup_content"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:textSize="15sp" />
+
+    </GridLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/grid_layout_input_popup"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/button_input_popup_okay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="완료"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/button_input_popup_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="취소"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

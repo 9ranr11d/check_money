@@ -7,12 +7,12 @@ import androidx.room.Query
 
 @Dao
 interface AccountBookDAO {
-    @Query("SELECT * FROM AccountBook WHERE bookName = ':bookName'")
-    fun getBook(bookName: String): List<AccountBook>
-
     @Insert
-    fun insertAll(accountBook: AccountBook)
+    fun insertAccountBook(accountBook: AccountBook)
 
     @Delete
-    fun delete(accountBook: AccountBook)
+    fun deleteAccountBook(accountBook: AccountBook)
+
+    @Query("SELECT * FROM AccountBook WHERE bookName = :bookName")
+    fun getAccountBook(bookName: String): List<AccountBook>
 }

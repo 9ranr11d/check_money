@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -50,5 +51,5 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.5.3'
     //Room
     implementation 'androidx.room:room-runtime:2.5.0'
-    annotationProcessor "androidx.room:room-compiler:2.5.0"
+    kapt 'androidx.room:room-compiler:2.5.0'
 }
