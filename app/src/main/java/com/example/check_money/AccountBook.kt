@@ -10,5 +10,5 @@ data class AccountBook(
     @ColumnInfo val date: String,
     @ColumnInfo val mode: String,
     @ColumnInfo val amount: Int,
-    @ColumnInfo val content: String?
+    @ColumnInfo val content: String
 )

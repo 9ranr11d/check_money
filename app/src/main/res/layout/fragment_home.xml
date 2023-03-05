@@ -26,7 +26,7 @@
             android:layout_height="270dp" >
 
             <GridLayout
-                android:id="@+id/grid_layout_home_checked_person_list"
+                android:id="@+id/grid_layout_home_list_of_checked_people"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"

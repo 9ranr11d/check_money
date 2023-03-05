@@ -26,7 +26,7 @@
         <TextView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:text="*날짜 :"
+            android:text="날짜 :"
             android:textSize="15sp"/>
 
         <TextView
@@ -55,7 +55,7 @@
         <TextView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:text="*금액 :"
+            android:text="금액 :"
             android:textSize="15sp"/>
 
         <EditText

@@ -17,6 +17,8 @@ class MainActivity : AppCompatActivity() {
     companion object {
         var bookName: String = ""
         var makingABook: ArrayList<AccountBook> = ArrayList()
+        var setOfCheckedPeople: ArrayList<String> = ArrayList()
+        var recordOfPerson: ArrayList<String> = ArrayList()
     }
 
     private lateinit var mainBinding: ActivityMainBinding
@@ -46,21 +48,20 @@ class MainActivity : AppCompatActivity() {
         bookName = sharedPreferences.getString("BOOK_NAME", "First_Book")!!
         Log.i(TAG, "In BOOK_NAME = $bookName")
 
-        //Room에서 데이터 가져오기
+        roomUpdate(bookName)
+    }
+
+    //Room에서 가져오는 데이터 최신화
+    fun roomUpdate(name: String) {
+        //Room
         val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "AccountBook").build()
         val accountBookDAO = db.accountBookDAO()
         CoroutineScope(Dispatchers.IO).launch {
-            makingABook = accountBookDAO.getAccountBook(bookName) as ArrayList<AccountBook>   //List를 ArrayList로
-            Log.i(TAG, "Selected book = $bookName")
+            makingABook = accountBookDAO.getAccountBook(name) as ArrayList<AccountBook>         //bookName에 맞는 기록만 가져오기
+            Log.i(TAG, "Selected book = $name")
+
+            setOfCheckedPeople = accountBookDAO.getSingleContent(name, "납부") as ArrayList<String>  //납부자 명단 가져오기
+            Log.i(TAG, "List of checked people = $setOfCheckedPeople")
         }
     }
-
-    /*override fun onStop() {
-        val editor = sharedPreferences.edit()
-        editor.putString("BOOK_NAME", bookName)
-        editor.apply()
-
-        Log.i(TAG, "out BOOK_NAME = $bookName")
-        super.onStop()
-    }*/
 }

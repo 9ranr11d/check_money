@@ -24,6 +24,12 @@ class SettingFragment : Fragment() {
             Log.i(TAG, "bookName = " + MainActivity.bookName)
         }
 
+//        val editor = sharedPreferences.edit()
+//        editor.putString("BOOK_NAME", bookName)
+//        editor.apply()
+//
+//        Log.i(TAG, "Out BOOK_NAME = $bookName")
+
         return bindingSetting.root
     }
 }

@@ -56,6 +56,7 @@ class InputPopupActivity : AppCompatActivity(), View.OnClickListener {
                 finish()
             }
             R.id.button_input_popup_date_change -> {    //날짜 변경 버튼
+
                 //CalendarDialog 띄우기
                 var selectedDateArray = inputPopupBinding.textViewInputPopupDate.text.toString().split("-")
                 val calendar = Calendar.getInstance()
