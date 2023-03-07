@@ -21,52 +21,29 @@ import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment(), View.OnClickListener {
     private val TAG: String = "HomeFragment"
+
     private lateinit var homeBinding: FragmentHomeBinding
+
     private lateinit var homeLauncher: ActivityResultLauncher<Intent>
+
+    private var listOfCheckedPeople: ArrayList<AccountBook> = ArrayList()   //납부자 명단
+    private var listOfExpenditure: ArrayList<AccountBook> = ArrayList()     //지출 내역 목록
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeBinding = FragmentHomeBinding.inflate(layoutInflater)   //View Binding
+        homeBinding = FragmentHomeBinding.inflate(layoutInflater)       //View Binding
+
+        //Button Listener
+        homeBinding.buttonHomePayment.setOnClickListener(this)          //납부 버튼 Listener
+        homeBinding.buttonHomeExpenditure.setOnClickListener(this)      //지출 버튼 Listener
+
         //Room
         val db = Room.databaseBuilder(requireContext(), AppDatabase::class.java, "AccountBook").build()
         val accountBookDAO = db.accountBookDAO()
 
-        //Button Listener
-        homeBinding.buttonHomePayment.setOnClickListener(this)      //납부 버튼 Listener
-        homeBinding.buttonHomeDisburse.setOnClickListener(this)     //지출 버튼 Listener
-
-        var listOfCheckedPeople: ArrayList<AccountBook> = ArrayList()
-        var listOfDisburse: ArrayList<AccountBook> = ArrayList()
-
-        for(page in MainActivity.makingABook) {
-            when(page.mode) {
-                "납부" -> listOfCheckedPeople.add(page)
-                "지출" -> listOfDisburse.add(page)
-            }
-        }
-
-        balanceUpdate(listOfCheckedPeople, listOfDisburse)          //잔액 표시
-
-        //납부한 사람 목록 띄우기
-        for(person in MainActivity.setOfCheckedPeople) {
-            val personName = TextView(context)                  //이름
-            personName.text = person
-
-            var dateOfLastRecord = ""
-
-            for(target in listOfCheckedPeople) {
-                if(target.content == person)
-                    dateOfLastRecord = target.date
-            }
-
-            val dateOfLastRecordOfPerson = TextView(context)    //마지막 납부 날짜
-            dateOfLastRecordOfPerson.text = dateOfLastRecord
-
-            homeBinding.gridLayoutHomeListOfCheckedPeople.addView(personName)
-            homeBinding.gridLayoutHomeListOfCheckedPeople.addView(dateOfLastRecordOfPerson)
-        }
+        balanceUpdate()   //잔액 표시
 
         //다시 넘어온 값
         homeLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -87,14 +64,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     var pageToAdd = AccountBook(0, MainActivity.bookName, selectedDate!!, mode, amount!!, content!!)
                     MainActivity.makingABook.add(pageToAdd)
 
-                    Log.i(TAG, "Add = $pageToAdd")
-
                     //Room에 데이터 추가
                     CoroutineScope(Dispatchers.IO).launch {
                         accountBookDAO.insertAccountBook(pageToAdd)
                     }
 
-                    balanceUpdate(listOfCheckedPeople, listOfDisburse)     //잔액 최신화
+                    balanceUpdate()     //잔액 최신화
                 }
                 Activity.RESULT_CANCELED -> Log.i(TAG, "Cancel")
             }
@@ -111,21 +86,22 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
                 homeLauncher.launch(intentOfPayment)
             }
-            R.id.button_home_disburse -> {  //지출 버튼
-                val intentOfDisburse = Intent(context, InputPopupActivity::class.java)
-                intentOfDisburse.putExtra("POPUP_TYPE", false)
+            R.id.button_home_expenditure -> {  //지출 버튼
+                val intentOfExpenditure = Intent(context, InputPopupActivity::class.java)
+                intentOfExpenditure.putExtra("POPUP_TYPE", false)
 
-                homeLauncher.launch(intentOfDisburse)
+                homeLauncher.launch(intentOfExpenditure)
             }
         }
     }
 
     //잔액 계산
-    private fun balanceUpdate(payment: ArrayList<AccountBook>, disburese: ArrayList<AccountBook>) {
+    private fun balanceUpdate() {
+        divideOfList()
         var balance = 0     //잔액
 
-        balance += sumOfList(payment)
-        balance -= sumOfList(disburese)
+        balance += sumOfList(listOfCheckedPeople)
+        balance -= sumOfList(listOfExpenditure)
 
         homeBinding.textViewHomeBalance.text = balance.toString()   //잔액 표시
     }
@@ -137,5 +113,57 @@ class HomeFragment : Fragment(), View.OnClickListener {
             result += target.amount
 
         return result
+    }
+
+    private fun divideOfList() {
+        listOfCheckedPeople.clear()
+        listOfExpenditure.clear()
+
+        for(page in MainActivity.makingABook) {
+            when(page.mode) {
+                "납부" -> listOfCheckedPeople.add(page)
+                "지출" -> listOfExpenditure.add(page)
+            }
+        }
+
+        showList()
+    }
+
+    private fun showList() {
+
+        //납부한 사람 목록 띄우기
+        for(person in MainActivity.setOfCheckedPeople) {
+            val personName = TextView(context)                  //이름
+            personName.text = person
+
+            var dateOfLastRecord = ""
+
+            for(target in listOfCheckedPeople) {
+                if(target.content == person)
+                    dateOfLastRecord = target.date
+            }
+
+            val dateOfLastRecordOfPerson = TextView(context)    //마지막 납부 날짜
+            dateOfLastRecordOfPerson.text = dateOfLastRecord
+
+            homeBinding.gridLayoutHomeListOfCheckedPeople.addView(personName)
+            homeBinding.gridLayoutHomeListOfCheckedPeople.addView(dateOfLastRecordOfPerson)
+        }
+
+        //지출 목록 띄우기
+        for(expenditureRecord in listOfExpenditure) {
+            val expenditureDetails = TextView(context)          //지출 내용
+            expenditureDetails.text = expenditureRecord.content
+
+            val expenditureAmount = TextView(context)           //지출 금액
+            expenditureAmount.text = expenditureRecord.amount.toString()
+
+            val expenditureDate = TextView(context)             //지출 날짜
+            expenditureDate.text = expenditureRecord.date
+
+            homeBinding.gridLayoutHomeListOfExpenditure.addView(expenditureDetails)
+            homeBinding.gridLayoutHomeListOfExpenditure.addView(expenditureAmount)
+            homeBinding.gridLayoutHomeListOfExpenditure.addView(expenditureDate)
+        }
     }
 }

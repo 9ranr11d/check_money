@@ -6,7 +6,7 @@
     tools:context=".HomeFragment">
 
     <LinearLayout
-        android:id="@+id/linear_layout_home_checked_person_list"
+        android:id="@+id/linear_layout_home_list_of_checked_person"
         android:layout_width="200dp"
         android:layout_height="300dp"
         android:layout_alignParentTop="true"
@@ -41,7 +41,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/liner_layout_home_disburse_list"
+        android:id="@+id/linear_layout_home_list_of_expenditure"
         android:layout_width="200dp"
         android:layout_height="300dp"
         android:layout_alignParentTop="true"
@@ -61,11 +61,11 @@
             android:layout_height="270dp" >
 
             <GridLayout
-                android:id="@+id/grid_layout_home_disburse_list"
+                android:id="@+id/grid_layout_home_list_of_expenditure"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:columnCount="2" >
+                android:columnCount="3" >
 
 
 
@@ -80,16 +80,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/linear_layout_home_list_of_checked_person"
         android:text="잔액"
         android:textSize="50sp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100dp"
+        android:layout_below="@+id/text_view_home_balance"
+        android:layout_marginTop="50dp"
         android:orientation="horizontal"
         android:gravity="center" >
 
@@ -102,7 +102,7 @@
             android:textSize="20sp" />
 
         <Button
-            android:id="@+id/button_home_disburse"
+            android:id="@+id/button_home_expenditure"
             android:layout_width="150dp"
             android:layout_height="70dp"
             android:layout_margin="5dp"
