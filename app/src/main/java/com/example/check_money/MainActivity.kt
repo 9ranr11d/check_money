@@ -11,15 +11,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
-    private val TAG: String = "MainActivity"
-    private val sharedFileName: String = "drawer"
+    private val TAG = "MainActivity"
+
+    private val sharedFileName = "drawer"
 
     private lateinit var mainBinding: ActivityMainBinding
 
     companion object {
-        var bookName: String = ""
+        var bookName = ""
+        var seq = 0
+
         var makingABook: ArrayList<AccountBook> = ArrayList()
-        var setOfCheckedPeople: ArrayList<String> = ArrayList()
+        var setOfCheckedPeople: HashSet<String> = HashSet()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +31,36 @@ class MainActivity : AppCompatActivity() {
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
 
-        //바텀 네비게이션
+        getSharedPreferences()
+        getDataBase()
+        createBottomNavigation()
+    }
+
+    //Room에서 데이터 가져오기
+    private fun getDataBase() {
+        val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "AccountBook").build()
+        val accountBookDAO = db.accountBookDAO()
+        CoroutineScope(Dispatchers.IO).launch {
+            makingABook = accountBookDAO.getAccountBook(bookName) as ArrayList<AccountBook>             //bookName에 해당하는 기록 가져오기
+            Log.i(TAG, "Selected book = $bookName")
+
+            setOfCheckedPeople = accountBookDAO.getSingleContent(bookName, "납부").toHashSet()    //납부자 명단 가져오기
+            Log.i(TAG, "List of checked people = $setOfCheckedPeople")
+        }
+    }
+
+    //Shared Preferences에 저장된 변수 가져오기
+    private fun getSharedPreferences() {
+        val sharedPreferences = getSharedPreferences(sharedFileName, MODE_PRIVATE)
+        bookName = sharedPreferences.getString("BOOK_NAME", "First_Book")!!
+        Log.i(TAG, "In BOOK_NAME = $bookName")
+
+        seq = sharedPreferences.getInt("SEQ", 0)
+        Log.i(TAG, "In SEQ = $seq")
+    }
+
+    //Bottom Navigation
+    private fun createBottomNavigation() {
         supportFragmentManager.beginTransaction().add(R.id.frame_layout_main, HomeFragment()).commit()
         mainBinding.bottomNavigationMain.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener {
             when(it.itemId) {
@@ -41,21 +73,16 @@ class MainActivity : AppCompatActivity() {
             }
             true
         })
+    }
 
-        //sharedPreferences에 저장된 변수 가져오기
+    //종료시 SEQ값 저장
+    override fun onStop() {
+        super.onStop()
         val sharedPreferences = getSharedPreferences(sharedFileName, MODE_PRIVATE)
-        bookName = sharedPreferences.getString("BOOK_NAME", "First_Book")!!
-        Log.i(TAG, "In BOOK_NAME = $bookName")
+        val editor = sharedPreferences.edit()
+        editor.putInt("SEQ", seq)
+        editor.apply()
 
-        //Room
-        val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "AccountBook").build()
-        val accountBookDAO = db.accountBookDAO()
-        CoroutineScope(Dispatchers.IO).launch {
-            makingABook = accountBookDAO.getAccountBook(bookName) as ArrayList<AccountBook>         //bookName에 맞는 기록만 가져오기
-            Log.i(TAG, "Selected book = $bookName")
-
-            setOfCheckedPeople = accountBookDAO.getSingleContent(bookName, "납부") as ArrayList<String>  //납부자 명단 가져오기
-            Log.i(TAG, "List of checked people = $setOfCheckedPeople")
-        }
+        Log.i(TAG, "Out SEQ = $seq")
     }
 }

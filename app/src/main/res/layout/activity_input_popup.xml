@@ -7,7 +7,7 @@
     tools:context=".InputPopupActivity">
 
     <TextView
-        android:id="@+id/text_view_input_popup_title"
+        android:id="@+id/text_view_input_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -16,12 +16,12 @@
         android:textSize="25sp" />
 
     <LinearLayout
-        android:id="@+id/linear_layout_input_popup_date"
+        android:id="@+id/linear_layout_input_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/text_view_input_popup_title"
-        android:orientation="horizontal" >
+        android:layout_below="@+id/text_view_input_title"
+        android:orientation="horizontal">
 
         <TextView
             android:layout_width="50dp"
@@ -30,27 +30,27 @@
             android:textSize="15sp"/>
 
         <TextView
-            android:id="@+id/text_view_input_popup_date"
+            android:id="@+id/text_view_input_date"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="날짜"
             android:textSize="15sp" />
 
         <Button
-            android:id="@+id/button_input_popup_date_change"
+            android:id="@+id/button_input_date_change"
             android:layout_width="50dp"
             android:layout_height="50dp" />
 
     </LinearLayout>
 
     <GridLayout
-        android:id="@+id/grid_layout_input_popup"
+        android:id="@+id/grid_layout_input"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linear_layout_input_popup_date"
+        android:layout_below="@+id/linear_layout_input_date"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal"
-        android:columnCount="2" >
+        android:columnCount="2">
 
         <TextView
             android:layout_width="50dp"
@@ -59,7 +59,7 @@
             android:textSize="15sp"/>
 
         <EditText
-            android:id="@+id/edit_text_input_popup_amount"
+            android:id="@+id/edit_text_input_amount"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:inputType="number"
@@ -74,7 +74,7 @@
             android:textSize="15sp"/>
 
         <EditText
-            android:id="@+id/edit_text_input_popup_content"
+            android:id="@+id/edit_text_input_content"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:textSize="15sp" />
@@ -84,12 +84,12 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/grid_layout_input_popup"
+        android:layout_below="@+id/grid_layout_input"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button_input_popup_okay"
+            android:id="@+id/button_input_okay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -97,7 +97,7 @@
             android:textSize="15sp" />
 
         <Button
-            android:id="@+id/button_input_popup_cancel"
+            android:id="@+id/button_input_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"

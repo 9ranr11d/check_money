@@ -1,9 +1,6 @@
 package com.example.check_money
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface AccountBookDAO {
@@ -12,6 +9,9 @@ interface AccountBookDAO {
 
     @Delete
     fun deleteAccountBook(accountBook: AccountBook)
+
+    @Update
+    fun updateAccountBook(accountBook: AccountBook)
 
     @Query("SELECT * FROM AccountBook WHERE bookName = :bookName")
     fun getAccountBook(bookName: String): List<AccountBook>

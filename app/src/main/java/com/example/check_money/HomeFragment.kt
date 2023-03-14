@@ -3,12 +3,12 @@ package com.example.check_money
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.room.Room
@@ -16,11 +16,12 @@ import com.example.check_money.databinding.FragmentHomeBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment(), View.OnClickListener {
-    private val TAG: String = "HomeFragment"
+    private val TAG = "HomeFragment"
 
     private lateinit var homeBinding: FragmentHomeBinding
 
@@ -33,11 +34,14 @@ class HomeFragment : Fragment(), View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeBinding = FragmentHomeBinding.inflate(layoutInflater)       //View Binding
+        //View Binding
+        homeBinding = FragmentHomeBinding.inflate(layoutInflater)
 
         //Button Listener
-        homeBinding.buttonHomePayment.setOnClickListener(this)          //납부 버튼 Listener
-        homeBinding.buttonHomeExpenditure.setOnClickListener(this)      //지출 버튼 Listener
+        homeBinding.buttonHomePayment.setOnClickListener(this)              //납부 버튼 Listener
+        homeBinding.buttonHomeExpenditure.setOnClickListener(this)          //지출 버튼 Listener
+        homeBinding.buttonHomeCheckedPeopleBook.setOnClickListener(this)    //납부자 자세히 보기 버튼 Listener
+        homeBinding.buttonHomeExpenditureBook.setOnClickListener(this)      //지출 내역 자세히 보기 버튼 Listener
 
         //Room
         val db = Room.databaseBuilder(requireContext(), AppDatabase::class.java, "AccountBook").build()
@@ -49,7 +53,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         homeLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             when(it.resultCode) {
                 Activity.RESULT_OK -> {
-                    val receivedData: Intent? = it.data
+                    val receivedData = it.data
 
                     var selectedDate = receivedData?.getStringExtra("SELECTED_DATE")
                     var amount = receivedData?.getIntExtra("AMOUNT", 0)
@@ -61,18 +65,20 @@ class HomeFragment : Fragment(), View.OnClickListener {
                         else -> "지출"
                     }
 
-                    var pageToAdd = AccountBook(0, MainActivity.bookName, selectedDate!!, mode, amount!!, content!!)
-                    MainActivity.makingABook.add(pageToAdd)
+                    var pageToAdd = AccountBook(MainActivity.seq++, MainActivity.bookName, selectedDate!!, mode, amount!!, content!!)
+
+                    MainActivity.makingABook.add(pageToAdd)             //메인 목록에 추가
+                    if(mode == "납부")
+                        MainActivity.setOfCheckedPeople.add(content)    //납부자 목록에 추가('납부' 일때만)
 
                     //Room에 데이터 추가
                     CoroutineScope(Dispatchers.IO).launch {
                         accountBookDAO.insertAccountBook(pageToAdd)
                     }
-
-                    balanceUpdate()     //잔액 최신화
                 }
-                Activity.RESULT_CANCELED -> Log.i(TAG, "Cancel")
+                Activity.RESULT_CANCELED -> Toast.makeText(context, "취소되었습니다.", Toast.LENGTH_SHORT).show()
             }
+            balanceUpdate()     //잔액 최신화
         }
 
         return homeBinding.root
@@ -80,33 +86,35 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when(v?.id) {
-            R.id.button_home_payment -> {   //납부 버튼
+            R.id.button_home_payment -> {               //납부 버튼
                 val intentOfPayment = Intent(context, InputPopupActivity::class.java)
                 intentOfPayment.putExtra("POPUP_TYPE", true)
 
                 homeLauncher.launch(intentOfPayment)
             }
-            R.id.button_home_expenditure -> {  //지출 버튼
+            R.id.button_home_expenditure -> {           //지출 버튼
                 val intentOfExpenditure = Intent(context, InputPopupActivity::class.java)
                 intentOfExpenditure.putExtra("POPUP_TYPE", false)
 
                 homeLauncher.launch(intentOfExpenditure)
             }
+            R.id.button_home_checked_people_book -> {   //납부자 목록 자세히 보기
+                val intentOfPageOfABook1 = Intent(context, PagesOfABookPopupActivity::class.java)
+                intentOfPageOfABook1.putExtra("PAGES", listOfCheckedPeople)
+
+                homeLauncher.launch(intentOfPageOfABook1)
+            }
+            R.id.button_home_expenditure_book -> {      //지출 내역 자세히 보기
+                val intentOfPageOfABook2 = Intent(context, PagesOfABookPopupActivity::class.java)
+                intentOfPageOfABook2.putExtra("PAGES", listOfExpenditure)
+
+                homeLauncher.launch(intentOfPageOfABook2)
+            }
         }
     }
 
-    //잔액 계산
-    private fun balanceUpdate() {
-        divideOfList()
-        var balance = 0     //잔액
-
-        balance += sumOfList(listOfCheckedPeople)
-        balance -= sumOfList(listOfExpenditure)
-
-        homeBinding.textViewHomeBalance.text = balance.toString()   //잔액 표시
-    }
-
-    private fun sumOfList(list: ArrayList<AccountBook>): Int {
+    //목록의 금액 합계
+    private fun sumOfAmountInList(list: ArrayList<AccountBook>): Int {
         var result = 0
 
         for(target in list)
@@ -115,6 +123,23 @@ class HomeFragment : Fragment(), View.OnClickListener {
         return result
     }
 
+    //목록 정렬
+    private fun sortTheList(target: ArrayList<AccountBook>) {
+        Collections.sort(target, AccountBook::compareTo)
+    }
+
+    //잔액 계산
+    private fun balanceUpdate() {
+        divideOfList()
+        var balance = 0     //잔액
+
+        balance += sumOfAmountInList(listOfCheckedPeople)
+        balance -= sumOfAmountInList(listOfExpenditure)
+
+        homeBinding.textViewHomeBalance.text = balance.toString()   //잔액 표시
+    }
+
+    //목록을 '납부'와 '지출로 나눔
     private fun divideOfList() {
         listOfCheckedPeople.clear()
         listOfExpenditure.clear()
@@ -129,7 +154,14 @@ class HomeFragment : Fragment(), View.OnClickListener {
         showList()
     }
 
+    //목록 띄우기
     private fun showList() {
+        //목록 초기화
+        homeBinding.gridLayoutHomeListOfCheckedPeople.removeAllViews()
+        homeBinding.gridLayoutHomeListOfExpenditure.removeAllViews()
+
+        sortTheList(listOfCheckedPeople)                    //납부자 목록을 날짜순으로 정렬
+        sortTheList(listOfExpenditure)                      //지출 내역을 날짜순으로 정렬
 
         //납부한 사람 목록 띄우기
         for(person in MainActivity.setOfCheckedPeople) {
@@ -146,6 +178,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
             val dateOfLastRecordOfPerson = TextView(context)    //마지막 납부 날짜
             dateOfLastRecordOfPerson.text = dateOfLastRecord
 
+            //목록에 추가
             homeBinding.gridLayoutHomeListOfCheckedPeople.addView(personName)
             homeBinding.gridLayoutHomeListOfCheckedPeople.addView(dateOfLastRecordOfPerson)
         }

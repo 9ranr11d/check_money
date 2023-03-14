@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ContentOfThePagePopupActivity">
+
+    <GridLayout
+        android:id="@+id/grid_layout_content_of_the_page"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:columnCount="2">
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="날짜"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/edit_text_content_of_the_page_date"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="날짜"
+            android:textSize="15sp" />
+
+        <!-- br -->
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="금액"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/edit_text_content_of_the_page_amount"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="금액"
+            android:textSize="15sp" />
+
+        <!-- br -->
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="내용"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/edit_text_content_of_the_page_content"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="내용"
+            android:textSize="15sp" />
+
+    </GridLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/grid_layout_content_of_the_page"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_content_of_the_page_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="수정"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/button_content_of_the_page_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="삭제"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/button_content_of_the_page_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="취소"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

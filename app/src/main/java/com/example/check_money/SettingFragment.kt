@@ -11,16 +11,17 @@ import com.example.check_money.databinding.FragmentSettingBinding
 
 class SettingFragment : Fragment() {
     private val TAG: String = "SettingFragment"
-    private lateinit var bindingSetting: FragmentSettingBinding
+
+    private lateinit var settingBinding: FragmentSettingBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        bindingSetting = FragmentSettingBinding.inflate(inflater, container, false)
+        settingBinding = FragmentSettingBinding.inflate(inflater, container, false)
 
-        bindingSetting.buttonSettingSave.setOnClickListener {
-            MainActivity.bookName = bindingSetting.editTextSettingBookName.text.toString()
+        settingBinding.buttonSettingSave.setOnClickListener {
+            MainActivity.bookName = settingBinding.editTextSettingBookName.text.toString()
             Log.i(TAG, "bookName = " + MainActivity.bookName)
         }
 
@@ -30,6 +31,6 @@ class SettingFragment : Fragment() {
 //
 //        Log.i(TAG, "Out BOOK_NAME = $bookName")
 
-        return bindingSetting.root
+        return settingBinding.root
     }
 }
