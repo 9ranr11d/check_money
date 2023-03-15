@@ -2,7 +2,9 @@ package com.example.check_money
 
 import android.app.Activity
 import android.content.Intent
+import android.database.sqlite.SQLiteConstraintException
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -43,10 +45,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
         homeBinding.buttonHomeCheckedPeopleBook.setOnClickListener(this)    //납부자 자세히 보기 버튼 Listener
         homeBinding.buttonHomeExpenditureBook.setOnClickListener(this)      //지출 내역 자세히 보기 버튼 Listener
 
-        //Room
-        val db = Room.databaseBuilder(requireContext(), AppDatabase::class.java, "AccountBook").build()
-        val accountBookDAO = db.accountBookDAO()
-
         balanceUpdate()   //잔액 표시
 
         //다시 넘어온 값
@@ -65,16 +63,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
                         else -> "지출"
                     }
 
-                    var pageToAdd = AccountBook(MainActivity.seq++, MainActivity.bookName, selectedDate!!, mode, amount!!, content!!)
-
-                    MainActivity.makingABook.add(pageToAdd)             //메인 목록에 추가
-                    if(mode == "납부")
-                        MainActivity.setOfCheckedPeople.add(content)    //납부자 목록에 추가('납부' 일때만)
-
-                    //Room에 데이터 추가
-                    CoroutineScope(Dispatchers.IO).launch {
-                        accountBookDAO.insertAccountBook(pageToAdd)
-                    }
+                    insertBook(MainActivity.seq++, MainActivity.bookName, selectedDate!!, mode, amount!!, content!!)
                 }
                 Activity.RESULT_CANCELED -> Toast.makeText(context, "취소되었습니다.", Toast.LENGTH_SHORT).show()
             }
@@ -111,6 +100,36 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 homeLauncher.launch(intentOfPageOfABook2)
             }
         }
+    }
+
+    //Room에 데이터 추가
+    private fun insertBook(seq: Int, bookName: String,date: String, mode: String, amount: Int, content: String) {
+        val db = Room.databaseBuilder(requireContext(), AppDatabase::class.java, "AccountBook").build()
+        val accountBookDAO = db.accountBookDAO()
+
+        var pageToAdd = AccountBook(
+            seq,
+            bookName,
+            date,
+            mode,
+            amount,
+            content
+        )
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                accountBookDAO.insertAccountBook(pageToAdd)         //Room에 데이터 추가
+            }catch(e: SQLiteConstraintException) {
+                MainActivity.seq += 5
+                insertBook(MainActivity.seq++, bookName, date, mode, amount, content)
+            }catch(e: java.lang.Exception) {
+                e.stackTrace
+            }
+        }
+
+        MainActivity.makingABook.add(pageToAdd)                     //메인 목록에 추가
+        if (mode == "납부")
+            MainActivity.setOfCheckedPeople.add(content)            //납부자 목록에 추가('납부' 일때만)
     }
 
     //목록의 금액 합계
@@ -162,9 +181,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         sortTheList(listOfCheckedPeople)                    //납부자 목록을 날짜순으로 정렬
         sortTheList(listOfExpenditure)                      //지출 내역을 날짜순으로 정렬
+        var tempListOfCheckedPeople = ArrayList<String>(MainActivity.setOfCheckedPeople)
+        tempListOfCheckedPeople.sort()                      //납부자 명단을 이름순으로 정렬
 
         //납부한 사람 목록 띄우기
-        for(person in MainActivity.setOfCheckedPeople) {
+        for(person in tempListOfCheckedPeople) {
             val personName = TextView(context)                  //이름
             personName.text = person
 

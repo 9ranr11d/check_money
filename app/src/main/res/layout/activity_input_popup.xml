@@ -38,8 +38,8 @@
 
         <Button
             android:id="@+id/button_input_date_change"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
 
     </LinearLayout>
 

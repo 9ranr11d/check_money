@@ -35,7 +35,7 @@ class PagesOfABookPopupActivity : AppCompatActivity(), View.OnClickListener {
         pageOfABookBinding.buttonPagesOfABookClose.setOnClickListener(this)
 
         //넘어 온 ArrayList<AccountBook>
-        var utils = Utils()
+        val utils = Utils()
         var pages = utils.serializableArrayFormat(intent, "PAGES")
 
         //Recycler View
@@ -75,7 +75,7 @@ class PagesOfABookPopupActivity : AppCompatActivity(), View.OnClickListener {
                         selectedAmount!!,
                         selectedContent!!
                     )
-
+                    //Room에 데이터 추가
                     CoroutineScope(Dispatchers.IO).launch {
                         accountBookDAO.updateAccountBook(tempPage)
                     }
