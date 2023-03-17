@@ -120,8 +120,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
             try {
                 accountBookDAO.insertAccountBook(pageToAdd)         //Room에 데이터 추가
             }catch(e: SQLiteConstraintException) {
+                Log.e(TAG, "SQLiteConstraintException")
                 MainActivity.seq += 5
                 insertBook(MainActivity.seq++, bookName, date, mode, amount, content)
+                Log.d(TAG, "Seq $seq -> ${MainActivity.seq}")
             }catch(e: java.lang.Exception) {
                 e.stackTrace
             }
@@ -181,11 +183,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         sortTheList(listOfCheckedPeople)                    //납부자 목록을 날짜순으로 정렬
         sortTheList(listOfExpenditure)                      //지출 내역을 날짜순으로 정렬
-        var tempListOfCheckedPeople = ArrayList<String>(MainActivity.setOfCheckedPeople)
-        tempListOfCheckedPeople.sort()                      //납부자 명단을 이름순으로 정렬
+        var setToListCheckedPeople = ArrayList<String>(MainActivity.setOfCheckedPeople)
+        setToListCheckedPeople.sort()                      //납부자 명단을 이름순으로 정렬
 
         //납부한 사람 목록 띄우기
-        for(person in tempListOfCheckedPeople) {
+        for(person in setToListCheckedPeople) {
             val personName = TextView(context)                  //이름
             personName.text = person
 

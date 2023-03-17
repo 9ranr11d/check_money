@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -48,6 +49,7 @@ class PagesOfABookPopupActivity : AppCompatActivity(), View.OnClickListener {
         //RecyclerView 목록 선택 시 자세히 보기
         pageAdapter.setItemClickListener(object: PageAdapter.OnItemClickListener{
             override fun onClick(target: AccountBook, position: Int) {
+                Log.i(TAG, "Clicked (Target = $target, Position = $position")
                 pageClicked = target
                 pageNumber = position
 
@@ -67,7 +69,7 @@ class PagesOfABookPopupActivity : AppCompatActivity(), View.OnClickListener {
                     var selectedAmount = receivedData?.getIntExtra("AMOUNT", 0)
                     var selectedContent = receivedData?.getStringExtra("CONTENT")
 
-                    var tempPage = AccountBook(
+                    var updatePage = AccountBook(
                         selectedSeq!!,
                         pageClicked.bookName,
                         selectedDate!!,
@@ -75,12 +77,12 @@ class PagesOfABookPopupActivity : AppCompatActivity(), View.OnClickListener {
                         selectedAmount!!,
                         selectedContent!!
                     )
-                    //Room에 데이터 추가
+                    //Room에 데이터 변경
                     CoroutineScope(Dispatchers.IO).launch {
-                        accountBookDAO.updateAccountBook(tempPage)
+                        accountBookDAO.updateAccountBook(updatePage)
                     }
 
-                    pageAdapter.routineOfChanging(pageNumber, tempPage)
+                    pageAdapter.routineOfChanging(pageNumber, updatePage)
                 }
                 -2 -> {                     //삭제 버튼
                     //Room에서 데이터 삭제

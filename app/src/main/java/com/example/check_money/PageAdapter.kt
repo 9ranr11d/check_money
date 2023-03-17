@@ -1,6 +1,7 @@
 package com.example.check_money
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -65,5 +66,6 @@ class PageAdapter(private var pages: ArrayList<AccountBook>): RecyclerView.Adapt
 
         notifyItemRemoved(position)
         pages.removeAt(position)
+        notifyDataSetChanged()
     }
 }

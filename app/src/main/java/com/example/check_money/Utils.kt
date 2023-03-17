@@ -4,9 +4,12 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.TypedValue
+import androidx.core.app.ActivityCompat
 import androidx.viewbinding.ViewBinding
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.system.exitProcess
 
 class Utils {
     //ArrayList 직렬화 함수
@@ -22,4 +25,8 @@ class Utils {
             intent.getSerializableExtra(keyword, AccountBook::class.java)!!
         else
             intent.getSerializableExtra(keyword) as AccountBook
+
+    fun dpToPx(context: Context, dp: Float): Int {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.resources.displayMetrics).toInt()
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.check_money
 
+import android.content.SharedPreferences.Editor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,16 +14,18 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
 
-    private val sharedFileName = "drawer"
-
     private lateinit var mainBinding: ActivityMainBinding
 
+    private var allAccountBook = ArrayList<AccountBook>()
+
     companion object {
+        const val sharedFileName = "Bookshelf"
         var bookName = ""
         var seq = 0
 
-        var makingABook: ArrayList<AccountBook> = ArrayList()
-        var setOfCheckedPeople: HashSet<String> = HashSet()
+        var makingABook = ArrayList<AccountBook>()
+        var setOfCheckedPeople = HashSet<String>()
+        var bookshelf = HashSet<String>()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,9 +34,20 @@ class MainActivity : AppCompatActivity() {
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
 
+        createBottomNavigation()
+
         getSharedPreferences()
         getDataBase()
-        createBottomNavigation()
+    }
+
+    //Shared Preferences에 저장된 변수 가져오기
+    private fun getSharedPreferences() {
+        val sharedPreferences = getSharedPreferences(sharedFileName, MODE_PRIVATE)
+        bookName = sharedPreferences.getString("BOOK_NAME", "First_Book")!!
+        Log.i(TAG, "In BOOK_NAME = $bookName")
+
+        seq = sharedPreferences.getInt("SEQ", 0)
+        Log.i(TAG, "In SEQ = $seq")
     }
 
     //Room에서 데이터 가져오기
@@ -46,17 +60,14 @@ class MainActivity : AppCompatActivity() {
 
             setOfCheckedPeople = accountBookDAO.getSingleContent(bookName, "납부").toHashSet()    //납부자 명단 가져오기
             Log.i(TAG, "List of checked people = $setOfCheckedPeople")
+
+            bookshelf += accountBookDAO.getBookshelf().toHashSet()
+            Log.i(TAG, "Bookshelf = $bookshelf")
+
+            //저장된 데이터가 없을 때
+            if(bookshelf.isEmpty())
+                bookshelf.add(bookName)
         }
-    }
-
-    //Shared Preferences에 저장된 변수 가져오기
-    private fun getSharedPreferences() {
-        val sharedPreferences = getSharedPreferences(sharedFileName, MODE_PRIVATE)
-        bookName = sharedPreferences.getString("BOOK_NAME", "First_Book")!!
-        Log.i(TAG, "In BOOK_NAME = $bookName")
-
-        seq = sharedPreferences.getInt("SEQ", 0)
-        Log.i(TAG, "In SEQ = $seq")
     }
 
     //Bottom Navigation

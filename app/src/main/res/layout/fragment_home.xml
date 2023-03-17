@@ -44,8 +44,6 @@
                 android:orientation="horizontal"
                 android:columnCount="2">
 
-
-
             </GridLayout>
 
         </ScrollView>
