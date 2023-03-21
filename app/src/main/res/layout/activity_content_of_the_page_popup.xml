@@ -54,6 +54,7 @@
             android:id="@+id/edit_text_content_of_the_page_amount"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
+            android:inputType="number"
             android:hint="금액"
             android:textSize="15sp" />
 

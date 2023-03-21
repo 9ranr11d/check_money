@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
-    android:layout_height="wrap_content"
+    android:layout_height="200dp"
     tools:context=".InputPopupActivity">
 
     <TextView
@@ -64,6 +64,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:inputType="number"
+            android:hint="금액"
             android:textSize="15sp" />
 
         <!-- br -->
@@ -77,8 +78,9 @@
 
         <EditText
             android:id="@+id/edit_text_input_content"
-            android:layout_width="200dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:hint="내용"
             android:textSize="15sp" />
 
     </GridLayout>
