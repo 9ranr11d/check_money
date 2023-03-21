@@ -28,6 +28,7 @@
 
             <Button
                 android:id="@+id/button_home_checked_people_book"
+                android:background="@drawable/image_see_more"
                 android:layout_width="30dp"
                 android:layout_height="30dp" />
 
@@ -73,6 +74,7 @@
 
             <Button
                 android:id="@+id/button_home_expenditure_book"
+                android:background="@drawable/image_see_more"
                 android:layout_width="30dp"
                 android:layout_height="30dp" />
 

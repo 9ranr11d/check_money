@@ -62,11 +62,14 @@ class InputPopupActivity : AppCompatActivity(), View.OnClickListener {
             R.id.button_input_date_change -> {    //날짜 변경 버튼
                 //CalendarDialog 띄우기
                 var selectedDateArray = inputBinding.textViewInputDate.text.toString().split("-")
+
+                //날짜 초기값을 현재 선택된 날짜로
                 val calendar = Calendar.getInstance()
                 calendar.set(
                     selectedDateArray[0].toInt(),
                     selectedDateArray[1].toInt() - 1,
-                    selectedDateArray[2].toInt())  //날짜 초기값을 현재 선택된 날짜로
+                    selectedDateArray[2].toInt())
+
                 val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                     var dateStringBuilder = StringBuilder()
                     dateStringBuilder.append(year).append("-")
@@ -88,6 +91,7 @@ class InputPopupActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 DatePickerDialog(
                     this,
+                    R.style.Theme_Check_money_Calendar,
                     dateSetListener,
                     calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),

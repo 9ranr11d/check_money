@@ -120,7 +120,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                accountBookDAO.insertAccountBook(pageToAdd)         //Room에 데이터 추가
+                accountBookDAO.insertAccountBook(pageToAdd)                 //Room에 데이터 추가
+
+                MainActivity.makingABook.add(pageToAdd)                     //메인 목록에 추가
+                if (mode == "납부")
+                    MainActivity.setOfCheckedPeople.add(content)            //납부자 목록에 추가('납부' 일때만)
+
                 Log.d(TAG, "Insert $pageToAdd")
             }catch(e: SQLiteConstraintException) {
                 Log.e(TAG, "SQLiteConstraintException")
@@ -131,10 +136,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 e.stackTrace
             }
         }
-
-        MainActivity.makingABook.add(pageToAdd)                     //메인 목록에 추가
-        if (mode == "납부")
-            MainActivity.setOfCheckedPeople.add(content)            //납부자 목록에 추가('납부' 일때만)
     }
 
     //목록의 금액 합계

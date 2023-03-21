@@ -24,9 +24,14 @@ class ContentOfThePagePopupActivity : AppCompatActivity(), View.OnClickListener 
 
         //넘어온 Account객체
         val utils = Utils()
-        var contentOfThePage: AccountBook = utils.serializableObjectFormat(intent, "CONTENT_OF_THE_PAGE")!!
+        var contentOfThePage = utils.serializableObjectFormat(intent, "CONTENT_OF_THE_PAGE")!!
 
         seq = contentOfThePage.seq  //현재 선택된 기록의 seq값 저장
+
+        if(contentOfThePage.mode == "납부")
+            contentOfThePageBinding.textViewContentOfThePageContent.text = "납부자명 :"
+        else
+            contentOfThePageBinding.textViewContentOfThePageContent.text = "지출내용 :"
 
         contentOfThePageBinding.textViewContentOfThePageDate.text = contentOfThePage.date                   //날짜
         contentOfThePageBinding.editTextContentOfThePageAmount.setText(contentOfThePage.amount.toString())  //금액
@@ -87,6 +92,7 @@ class ContentOfThePagePopupActivity : AppCompatActivity(), View.OnClickListener 
                 }
                 DatePickerDialog(
                     this,
+                    R.style.Theme_Check_money_Calendar,
                     dateSetListener,
                     calendar.get(Calendar.YEAR),
                     calendar.get(Calendar.MONTH),
