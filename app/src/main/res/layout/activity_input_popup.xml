@@ -68,7 +68,8 @@
         <!-- br -->
 
         <TextView
-            android:layout_width="50dp"
+            android:id="@+id/text_view_input_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="내용 :"
             android:textSize="15sp"/>

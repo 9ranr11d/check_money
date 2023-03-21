@@ -33,9 +33,4 @@
         android:text="내용"
         android:textSize="15sp" />
 
-    <CheckBox
-        android:id="@+id/check_box_recycler_view"
-        android:layout_width="30dp"
-        android:layout_height="30dp" />
-
 </LinearLayout>

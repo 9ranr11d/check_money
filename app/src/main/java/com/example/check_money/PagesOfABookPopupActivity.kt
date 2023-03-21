@@ -81,6 +81,8 @@ class PagesOfABookPopupActivity : AppCompatActivity(), View.OnClickListener {
                     CoroutineScope(Dispatchers.IO).launch {
                         accountBookDAO.updateAccountBook(updatePage)
                     }
+                    Log.d(TAG, "Update $pageClicked")
+                    Log.d(TAG, "└----> $updatePage")
 
                     pageAdapter.routineOfChanging(pageNumber, updatePage)
                 }
@@ -89,6 +91,7 @@ class PagesOfABookPopupActivity : AppCompatActivity(), View.OnClickListener {
                     CoroutineScope(Dispatchers.IO).launch {
                         accountBookDAO.deleteAccountBook(pageClicked)
                     }
+                    Log.d(TAG, "Delete $pageClicked")
 
                     pageAdapter.routineOfRemove(pageNumber)
                 }

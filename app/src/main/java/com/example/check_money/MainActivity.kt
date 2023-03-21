@@ -4,6 +4,7 @@ import android.content.SharedPreferences.Editor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.room.Room
 import com.example.check_money.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationBarView
@@ -15,8 +16,6 @@ class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
 
     private lateinit var mainBinding: ActivityMainBinding
-
-    private var allAccountBook = ArrayList<AccountBook>()
 
     companion object {
         const val sharedFileName = "Bookshelf"
@@ -48,6 +47,10 @@ class MainActivity : AppCompatActivity() {
 
         seq = sharedPreferences.getInt("SEQ", 0)
         Log.i(TAG, "In SEQ = $seq")
+
+        //Theme 설정
+        val utils = Utils()
+        utils.changeTheme(applicationContext, sharedPreferences.getInt("THEME", AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY))
     }
 
     //Room에서 데이터 가져오기
@@ -55,24 +58,25 @@ class MainActivity : AppCompatActivity() {
         val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "AccountBook").build()
         val accountBookDAO = db.accountBookDAO()
         CoroutineScope(Dispatchers.IO).launch {
-            makingABook = accountBookDAO.getAccountBook(bookName) as ArrayList<AccountBook>             //bookName에 해당하는 기록 가져오기
+            //BookName에 해당하는 기록 가져오기
+            makingABook = accountBookDAO.getAccountBook(bookName) as ArrayList<AccountBook>
             Log.i(TAG, "Selected book = $bookName")
 
-            setOfCheckedPeople = accountBookDAO.getSingleContent(bookName, "납부").toHashSet()    //납부자 명단 가져오기
+            //납부자 명단 가져오기
+            setOfCheckedPeople = accountBookDAO.getSingleContent(bookName, "납부").toHashSet()
             Log.i(TAG, "List of checked people = $setOfCheckedPeople")
 
-            bookshelf += accountBookDAO.getBookshelf().toHashSet()
+            //BookName 목록 가져오기
+            bookshelf = accountBookDAO.getBookshelf().toHashSet()
+            bookshelf.add(bookName)
             Log.i(TAG, "Bookshelf = $bookshelf")
-
-            //저장된 데이터가 없을 때
-            if(bookshelf.isEmpty())
-                bookshelf.add(bookName)
         }
     }
 
     //Bottom Navigation
     private fun createBottomNavigation() {
-        supportFragmentManager.beginTransaction().add(R.id.frame_layout_main, HomeFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.frame_layout_main, HomeFragment()).commit()
+        mainBinding.bottomNavigationMain.selectedItemId = R.id.item_navigation_home
         mainBinding.bottomNavigationMain.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener {
             when(it.itemId) {
                 R.id.item_navigation_home -> {

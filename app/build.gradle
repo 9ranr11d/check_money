@@ -52,4 +52,6 @@ dependencies {
     //Room
     implementation 'androidx.room:room-runtime:2.5.0'
     kapt 'androidx.room:room-compiler:2.5.0'
+    //Excel(poi)
+    implementation 'org.apache.poi:poi:3.9'
 }

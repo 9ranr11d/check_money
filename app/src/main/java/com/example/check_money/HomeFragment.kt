@@ -45,6 +45,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
         homeBinding.buttonHomeCheckedPeopleBook.setOnClickListener(this)    //납부자 자세히 보기 버튼 Listener
         homeBinding.buttonHomeExpenditureBook.setOnClickListener(this)      //지출 내역 자세히 보기 버튼 Listener
 
+        homeBinding.textViewHomeGroupName.text = MainActivity.bookName      //계 이름 표시
+
         balanceUpdate()   //잔액 표시
 
         //다시 넘어온 값
@@ -119,6 +121,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 accountBookDAO.insertAccountBook(pageToAdd)         //Room에 데이터 추가
+                Log.d(TAG, "Insert $pageToAdd")
             }catch(e: SQLiteConstraintException) {
                 Log.e(TAG, "SQLiteConstraintException")
                 MainActivity.seq += 5
@@ -186,10 +189,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
         var setToListCheckedPeople = ArrayList<String>(MainActivity.setOfCheckedPeople)
         setToListCheckedPeople.sort()                      //납부자 명단을 이름순으로 정렬
 
+        val utils = Utils()
         //납부한 사람 목록 띄우기
         for(person in setToListCheckedPeople) {
             val personName = TextView(context)                  //이름
             personName.text = person
+            personName.width = utils.dpToPx(requireContext(), 50F)
 
             var dateOfLastRecord = ""
 
@@ -200,6 +205,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
             val dateOfLastRecordOfPerson = TextView(context)    //마지막 납부 날짜
             dateOfLastRecordOfPerson.text = dateOfLastRecord
+            dateOfLastRecordOfPerson.width = utils.dpToPx(requireContext(), 100F)
 
             //목록에 추가
             homeBinding.gridLayoutHomeListOfCheckedPeople.addView(personName)
@@ -210,12 +216,15 @@ class HomeFragment : Fragment(), View.OnClickListener {
         for(expenditureRecord in listOfExpenditure) {
             val expenditureDetails = TextView(context)          //지출 내용
             expenditureDetails.text = expenditureRecord.content
+            expenditureDetails.width = utils.dpToPx(requireContext(), 50F)
 
             val expenditureAmount = TextView(context)           //지출 금액
-            expenditureAmount.text = expenditureRecord.amount.toString()
+            expenditureAmount.text = "${expenditureRecord.amount}원"
+            expenditureAmount.width = utils.dpToPx(requireContext(), 50F)
 
             val expenditureDate = TextView(context)             //지출 날짜
             expenditureDate.text = expenditureRecord.date
+            expenditureDate.width = utils.dpToPx(requireContext(), 100F)
 
             homeBinding.gridLayoutHomeListOfExpenditure.addView(expenditureDetails)
             homeBinding.gridLayoutHomeListOfExpenditure.addView(expenditureAmount)

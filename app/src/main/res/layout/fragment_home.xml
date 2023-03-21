@@ -97,12 +97,22 @@
 
     </LinearLayout>
 
+
+    <TextView
+        android:id="@+id/text_view_home_group_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_layout_home_list_of_checked_person"
+        android:layout_centerHorizontal="true"
+        android:text="계 이름"
+        android:textSize="20sp" />
+
     <TextView
         android:id="@+id/text_view_home_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/linear_layout_home_list_of_checked_person"
+        android:layout_below="@+id/text_view_home_group_name"
         android:text="잔액"
         android:textSize="50sp" />
 

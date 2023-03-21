@@ -26,10 +26,14 @@ class InputPopupActivity : AppCompatActivity(), View.OnClickListener {
         isThePaymentFlag = intent.getBooleanExtra("POPUP_TYPE", true)    //납부 or 지출
 
         //Dialog 제목
-        if(isThePaymentFlag)
+        if(isThePaymentFlag) {
             inputBinding.textViewInputTitle.text = "납부"
-        else
+            inputBinding.textViewInputContent.text = "납부자 :"
+        }
+        else {
             inputBinding.textViewInputTitle.text = "지출"
+            inputBinding.textViewInputContent.text = "지출내용 :"
+        }
 
         //Button Listener
         inputBinding.buttonInputOkay.setOnClickListener(this)       //확인 버튼 Listener
