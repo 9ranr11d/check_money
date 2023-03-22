@@ -140,15 +140,15 @@ class SettingFragment : Fragment(), View.OnClickListener {
             cell = row.createCell(1)
             cell.setCellValue(page.mode)
 
-            cell = row.createCell(3)
+            cell = row.createCell(2)
             cell.setCellValue(page.amount.toString())
 
-            cell = row.createCell(4)
+            cell = row.createCell(3)
             cell.setCellValue(page.content)
         }
 
         //Document에 gruopName.xls로 저장
-        val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+        val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         val file = File(dir, "$groupName.xls")
 
         //경로에 파일 있으면 삭제
@@ -158,7 +158,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
         //Excel파일 저장
         try {
             workbook.write(file.outputStream())
-            Toast.makeText(requireContext(), "$groupName.xls가 ${Environment.DIRECTORY_DOCUMENTS}에 저장 되었습니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "$groupName.xls가 ${Environment.DIRECTORY_DOWNLOADS}에 저장 되었습니다.", Toast.LENGTH_SHORT).show()
         }catch(e: FileNotFoundException) {
             e.stackTrace
         }catch(e: IOException) {
