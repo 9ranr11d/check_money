@@ -11,9 +11,9 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 2,
-      "versionName": "0.0.1",
-      "outputFile": "Check_money_0.0.1.apk"
+      "versionCode": 3,
+      "versionName": "0.0.2",
+      "outputFile": "Check_money_0.0.2.apk"
     }
   ],
   "elementType": "File"

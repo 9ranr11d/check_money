@@ -2,8 +2,10 @@ package com.example.check_money
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -36,11 +38,15 @@ class PagesOfABookPopupActivity : AppCompatActivity(), View.OnClickListener {
         pageOfABookBinding.buttonPagesOfABookClose.setOnClickListener(this)
 
         //넘어 온 ArrayList<AccountBook>
-        val utils = Utils()
-        var pages = utils.serializableArrayFormat(intent, "PAGES")
+        var pages =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                intent.getParcelableArrayListExtra("PAGES", AccountBook::class.java)
+            else
+                intent.getParcelableArrayListExtra("PAGES")
+
 
         //Recycler View
-        var pageAdapter = PageAdapter(pages)
+        var pageAdapter = PageAdapter(pages!!)
         pageOfABookBinding.recyclerViewPageOfABook.adapter = pageAdapter
 
         lateinit var pageClicked: AccountBook   //선택한 목록 객체
@@ -54,7 +60,7 @@ class PagesOfABookPopupActivity : AppCompatActivity(), View.OnClickListener {
                 pageNumber = position
 
                 var intentForPageClicks = Intent(applicationContext, ContentOfThePagePopupActivity::class.java)
-                intentForPageClicks.putExtra("CONTENT_OF_THE_PAGE", target)
+                intentForPageClicks.putParcelableExtra("CONTENT_OF_THE_PAGE", target)
 
                 pageOfABookLauncher.launch(intentForPageClicks)
             }
@@ -107,5 +113,9 @@ class PagesOfABookPopupActivity : AppCompatActivity(), View.OnClickListener {
                 finish()
             }
         }
+    }
+    //Serializable와 Parcelable 사이의 모호성을 확실히 하기 위해
+    fun Intent.putParcelableExtra(key: String, value: Parcelable) {
+        putExtra(key, value)
     }
 }

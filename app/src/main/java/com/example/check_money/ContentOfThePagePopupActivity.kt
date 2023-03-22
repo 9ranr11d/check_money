@@ -2,6 +2,7 @@ package com.example.check_money
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -23,10 +24,14 @@ class ContentOfThePagePopupActivity : AppCompatActivity(), View.OnClickListener 
         setContentView(contentOfThePageBinding.root)
 
         //넘어온 Account객체
-        val utils = Utils()
-        var contentOfThePage = utils.serializableObjectFormat(intent, "CONTENT_OF_THE_PAGE")!!
+        var contentOfThePage =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                intent.getParcelableExtra("CONTENT_OF_THE_PAGE", AccountBook::class.java)
+            else
+                intent.getParcelableExtra("CONTENT_OF_THE_PAGE")
 
-        seq = contentOfThePage.seq  //현재 선택된 기록의 seq값 저장
+
+        seq = contentOfThePage!!.seq  //현재 선택된 기록의 seq값 저장
 
         if(contentOfThePage.mode == "납부")
             contentOfThePageBinding.textViewContentOfThePageContent.text = "납부자명 :"
