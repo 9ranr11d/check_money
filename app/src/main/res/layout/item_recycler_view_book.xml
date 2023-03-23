@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/text_view_recycler_view_seq"
-        android:layout_width="50dp"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:text="순서"
         android:textSize="15sp" />
@@ -21,14 +21,14 @@
 
     <TextView
         android:id="@+id/text_view_recycler_view_amount"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="금액"
         android:textSize="15sp" />
 
     <TextView
         android:id="@+id/text_view_recycler_view_content"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="내용"
         android:textSize="15sp" />

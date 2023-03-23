@@ -6,55 +6,63 @@
     android:layout_height="match_parent"
     tools:context=".PagesOfABookPopupActivity">
 
-    <Button
-        android:id="@+id/button_pages_of_a_book_close"
-        android:background="@drawable/image_close"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true" />
-
-    <LinearLayout
-        android:id="@+id/linear_layout_pages_of_a_book_subtitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:text="순서"
-            android:textSize="15sp" />
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="날짜"
-            android:textSize="15sp" />
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="금액"
-            android:textSize="15sp" />
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="내용"
-            android:textSize="15sp" />
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_page_of_a_book"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
+    <RelativeLayout
+        android:layout_width="290dp"
+        android:layout_height="350dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/linear_layout_pages_of_a_book_subtitle"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"
-        tools:listitem="@layout/item_recycler_view_book" />
+        android:layout_centerVertical="true" >
+
+        <Button
+            android:id="@+id/button_pages_of_a_book_close"
+            android:background="@drawable/image_close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true" />
+
+        <LinearLayout
+            android:id="@+id/linear_layout_pages_of_a_book_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:text="순서"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="날짜"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="금액"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="내용"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_page_of_a_book"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/linear_layout_pages_of_a_book_subtitle"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            tools:listitem="@layout/item_recycler_view_book" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

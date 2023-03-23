@@ -2,112 +2,120 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="300dp"
-    android:layout_height="200dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".InputPopupActivity">
 
-    <TextView
-        android:id="@+id/text_view_input_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+    <RelativeLayout
+        android:layout_width="290dp"
+        android:layout_height="200dp"
         android:layout_centerHorizontal="true"
-        android:text="제목"
-        android:textSize="25sp" />
-
-    <LinearLayout
-        android:id="@+id/linear_layout_input_date"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/text_view_input_title"
-        android:orientation="horizontal">
+        android:layout_centerVertical="true" >
 
         <TextView
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:text="날짜 :"
-            android:textSize="15sp"/>
-
-        <TextView
-            android:id="@+id/text_view_input_date"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="날짜"
-            android:textSize="15sp" />
-
-        <Button
-            android:id="@+id/button_input_date_change"
-            android:background="@drawable/image_calendar_change"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
-
-    </LinearLayout>
-
-    <GridLayout
-        android:id="@+id/grid_layout_input"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linear_layout_input_date"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
-        android:columnCount="2">
-
-        <TextView
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:text="금액 :"
-            android:textSize="15sp"/>
-
-        <EditText
-            android:id="@+id/edit_text_input_amount"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="금액"
-            android:textSize="15sp" />
-
-        <!-- br -->
-
-        <TextView
-            android:id="@+id/text_view_input_content"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:text="내용 :"
-            android:textSize="15sp"/>
-
-        <EditText
-            android:id="@+id/edit_text_input_content"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:hint="내용"
-            android:textSize="15sp" />
-
-    </GridLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/grid_layout_input"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/button_input_okay"
+            android:id="@+id/text_view_input_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="완료"
-            android:textSize="15sp" />
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="제목"
+            android:textSize="25sp" />
 
-        <Button
-            android:id="@+id/button_input_cancel"
+        <LinearLayout
+            android:id="@+id/linear_layout_input_date"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/text_view_input_title"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="날짜 :"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/text_view_input_date"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="날짜"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/button_input_date_change"
+                android:background="@drawable/image_calendar_change"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+
+        </LinearLayout>
+
+        <GridLayout
+            android:id="@+id/grid_layout_input"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linear_layout_input_date"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:columnCount="2">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="금액 :"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/edit_text_input_amount"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="금액"
+                android:textSize="15sp" />
+
+            <!-- br -->
+
+            <TextView
+                android:id="@+id/text_view_input_content"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="내용 :"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/edit_text_input_content"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:hint="내용"
+                android:textSize="15sp" />
+
+        </GridLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="취소"
-            android:textSize="15sp" />
+            android:layout_below="@+id/grid_layout_input"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/button_input_okay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="완료"
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/button_input_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="취소"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

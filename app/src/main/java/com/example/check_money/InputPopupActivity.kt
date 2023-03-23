@@ -1,10 +1,16 @@
 package com.example.check_money
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
+import android.view.WindowManager
+import android.view.WindowMetrics
 import com.example.check_money.databinding.ActivityInputPopupBinding
 import java.text.SimpleDateFormat
 import java.util.*
